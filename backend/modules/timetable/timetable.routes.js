@@ -1,0 +1,15 @@
+const express = require("express");
+const auth = require("../../middleware/auth");
+const getTimetable = require("./getTimetable");
+const getTimetableById = require("./getTimetableById");
+const createTimetable = require("./createTimetable");
+const editTimetable = require("./editTimetable");
+const deleteTimetable = require("./deleteTimetable");
+const timetableRouter = express.Router();
+timetableRouter.get("/", getTimetable);
+timetableRouter.get("/getTimtetable/:timetableId", getTimetableById);
+timetableRouter.use(auth);
+timetableRouter.post("/create", createTimetable);
+timetableRouter.patch("/edit/:timetableId", editTimetable);
+timetableRouter.delete("/delete/:timetableId", deleteTimetable);
+module.exports = timetableRouter;
