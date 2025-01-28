@@ -8,6 +8,7 @@ import CreateTimetableForm from "./Components/CreateTimeTableForm";
 import CreateEventForm from "./Components/CreateEventForm";
 import CreateExamForm from "./Components/CreateExamForm";
 import { Outlet } from "react-router-dom";
+import CreateAnnouncementForm from "./Components/CreateAnnouncementForm";
 
 export default function AdminHome() {
   const [isOpen, setIsOpen] = useState(false);
@@ -54,9 +55,9 @@ export default function AdminHome() {
 
   return (
     <div>
-      <div className="md:flex">
+      <div className="lg:flex">
         <Sidebar />
-        <div className="pt-40 px-5 md:pt-0 w-full h-full">
+        <div className="pt-20 px-5 lg:pt-0 w-full h-full">
           {createStates.course && (
             <CreateCourseForm toggleCreateState={toggleCreateState} />
           )}
@@ -74,6 +75,9 @@ export default function AdminHome() {
           )}
           {createStates.exam && (
             <CreateExamForm toggleCreateState={toggleCreateState} />
+          )}
+          {createStates.announcement && (
+            <CreateAnnouncementForm toggleCreateState={toggleCreateState} />
           )}
           {!isAnyCreateFormOpen && <Outlet />}
         </div>

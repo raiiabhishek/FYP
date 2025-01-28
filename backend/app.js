@@ -64,6 +64,9 @@ app.use("/exams", examRouter);
 app.use("/announcements", announcementRouter);
 app.use("/teachers", teacherRouter);
 app.use("/students", studentRouter);
+
+app.use(auth);
+app.get("/dashboard", user);
 // Start the server
 app.listen(8000, () => {
   console.log("Server started on port 8000");

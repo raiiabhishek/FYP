@@ -14,7 +14,7 @@ const announcementSchema = new Schema({
   },
   course: {
     type: Schema.Types.ObjectId,
-    ref: "Course",
+    ref: "Courses",
     required: true,
   },
 });

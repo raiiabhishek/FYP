@@ -33,7 +33,7 @@ const createExam = async (req, res) => {
     }
     // 3. Find all users enrolled in the course
     const enrolledUsers = await UserModel.find({
-      courses: getCourse._id,
+      course: getCourse._id,
     });
 
     //4. Create the Exam

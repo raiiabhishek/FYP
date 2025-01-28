@@ -243,28 +243,28 @@ const EventTable = ({ events }) => {
         <table className="min-w-full bg-white rounded shadow-md">
           <thead className="bg-gray-100">
             <tr>
-              <th className="py-3 px-4 text-left font-semibold text-gray-700">
+              <th className="border border-gray-300 py-3 px-4 text-left font-semibold text-gray-700">
                 Title
               </th>
-              <th className="py-3 px-4 text-left font-semibold text-gray-700">
+              <th className="border border-gray-300 py-3 px-4 text-left font-semibold text-gray-700">
                 Description
               </th>
-              <th className="py-3 px-4 text-left font-semibold text-gray-700">
+              <th className="border border-gray-300 py-3 px-4 text-left font-semibold text-gray-700">
                 Start Date
               </th>
-              <th className="py-3 px-4 text-left font-semibold text-gray-700">
+              <th className="border border-gray-300 py-3 px-4 text-left font-semibold text-gray-700">
                 End Date
               </th>
-              <th className="py-3 px-4 text-left font-semibold text-gray-700">
+              <th className="border border-gray-300 py-3 px-4 text-left font-semibold text-gray-700">
                 Start Time
               </th>
-              <th className="py-3 px-4 text-left font-semibold text-gray-700">
+              <th className="border border-gray-300 py-3 px-4 text-left font-semibold text-gray-700">
                 End Time
               </th>
-              <th className="py-3 px-4 text-left font-semibold text-gray-700">
+              <th className="border border-gray-300 py-3 px-4 text-left font-semibold text-gray-700">
                 Location
               </th>
-              <th className="py-3 px-4 text-center font-semibold text-gray-700">
+              <th className="border border-gray-300 py-3 px-4 text-center font-semibold text-gray-700">
                 Actions
               </th>
             </tr>
@@ -272,18 +272,28 @@ const EventTable = ({ events }) => {
           <tbody>
             {filteredEvents.map((event) => (
               <tr key={event._id} className="border-b hover:bg-gray-50">
-                <td className="py-2 px-4">{event.title}</td>
-                <td className="py-2 px-4">{event.description}</td>
-                <td className="py-2 px-4">
+                <td className="border border-gray-300 py-2 px-4">
+                  {event.title}
+                </td>
+                <td className="border border-gray-300 py-2 px-4">
+                  {event.description}
+                </td>
+                <td className="border border-gray-300 py-2 px-4">
                   {moment(event.startDate).format("YYYY-MM-DD")}
                 </td>
-                <td className="py-2 px-4">
+                <td className="border border-gray-300 py-2 px-4">
                   {moment(event.endDate).format("YYYY-MM-DD")}
                 </td>
-                <td className="py-2 px-4">{event.startTime}</td>
-                <td className="py-2 px-4">{event.endTime}</td>
-                <td className="py-2 px-4">{event.location}</td>
-                <td className="py-2 px-4 text-center">
+                <td className="border border-gray-300 py-2 px-4">
+                  {event.startTime}
+                </td>
+                <td className="border border-gray-300 py-2 px-4">
+                  {event.endTime}
+                </td>
+                <td className="border border-gray-300 py-2 px-4">
+                  {event.location}
+                </td>
+                <td className="border border-gray-300 py-2 px-4 text-center">
                   <button
                     onClick={() => handleEditClick(event)}
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mr-2"

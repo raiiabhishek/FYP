@@ -7,7 +7,7 @@ import "./CalendarView.css";
 
 const localizer = momentLocalizer(moment);
 
-const CalendarView = () => {
+const CalendarView = ({ course }) => {
   const api = import.meta.env.VITE_URL;
   const [events, setEvents] = useState([]);
   const [exams, setExams] = useState([]);
@@ -30,7 +30,7 @@ const CalendarView = () => {
         setEvents(formattedEvents);
 
         // Fetch Exams
-        const examsRes = await axios.get(`${api}/exams`);
+        const examsRes = await axios.get(`${api}/exams/course/${course}`);
         const formattedExams = examsRes?.data?.data?.map((exam) => ({
           ...exam,
           start: new Date(exam.examDate),

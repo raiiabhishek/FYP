@@ -132,13 +132,13 @@ const CourseTable = ({ courses }) => {
         <table className="min-w-full bg-white rounded shadow-md">
           <thead className="bg-gray-100">
             <tr>
-              <th className="py-3 px-4 text-left font-semibold text-gray-700">
+              <th className=" border border-gray-300 py-3 px-4 text-left font-semibold text-gray-700">
                 Name
               </th>
-              <th className="py-3 px-4 text-left font-semibold text-gray-700">
+              <th className=" border border-gray-300 py-3 px-4 text-left font-semibold text-gray-700">
                 Description
               </th>
-              <th className="py-3 px-4 text-center font-semibold text-gray-700">
+              <th className=" border border-gray-300 py-3 px-4 text-center font-semibold text-gray-700">
                 Actions
               </th>
             </tr>
@@ -146,18 +146,22 @@ const CourseTable = ({ courses }) => {
           <tbody>
             {filteredCourses.map((course) => (
               <tr key={course._id} className="border-b hover:bg-gray-50">
-                <td className="py-2 px-4">{course.name}</td>
-                <td className="py-2 px-4">{course.description}</td>
-                <td className="py-2 px-4 text-center">
+                <td className="border border-gray-300 py-2 px-4">
+                  {course.name}
+                </td>
+                <td className="border border-gray-300 py-2 px-4">
+                  {course.description}
+                </td>
+                <td className="border border-gray-300 py-2 px-4 text-center space-y-2">
                   <button
                     onClick={() => handleEditClick(course)}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mr-2"
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded  w-full"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(course._id)}
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded w-full"
                   >
                     Delete
                   </button>

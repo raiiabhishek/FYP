@@ -157,7 +157,7 @@ const StudentTable = ({ students, setStudents }) => {
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
                   <button
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-full"
                     onClick={() => handleKickStudent(student._id)}
                   >
                     Kick

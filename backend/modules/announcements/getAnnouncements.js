@@ -5,6 +5,7 @@ const getAnnouncements = async (req, res) => {
     const announcements = await AnnouncementModel.find().populate("course");
     res.status(201).send({ status: "success", data: announcements });
   } catch (error) {
+    console.log(error);
     res.status(400).send({ message: error.message });
   }
 };

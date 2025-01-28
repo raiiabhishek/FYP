@@ -2,19 +2,19 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../../AuthContext";
 
-const TeacherTable = ({ teachers, setTeachers }) => {
+const StudentTable = ({ students, setStudents }) => {
   const api = import.meta.env.VITE_URL;
   const { authToken } = useContext(AuthContext);
   const [courseOptions, setCourseOptions] = useState([]);
   const [selectedFilterCourse, setSelectedFilterCourse] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredTeachers, setFilteredTeachers] = useState(teachers || []);
-  const [localTeachers, setLocalTeachers] = useState(teachers || []);
+  const [filteredStudents, setFilteredStudents] = useState(students || []);
+  const [localStudents, setLocalStudents] = useState(students || []);
 
   useEffect(() => {
-    setLocalTeachers(teachers || []);
-    setFilteredTeachers(teachers || []);
-  }, [teachers]);
+    setLocalStudents(students || []);
+    setFilteredStudents(students || []);
+  }, [students]);
 
   useEffect(() => {
     async function fetchCourses() {
@@ -37,51 +37,30 @@ const TeacherTable = ({ teachers, setTeachers }) => {
     setSelectedFilterCourse(selectedCourse);
 
     if (!selectedCourse) {
-      setFilteredTeachers(localTeachers);
+      setFilteredStudents(localStudents);
     } else {
-      const filtered = localTeachers.filter(
-        (teacher) => teacher.course.name === selectedCourse
+      const filtered = localStudents.filter(
+        (student) => student.course.name === selectedCourse
       );
-      setFilteredTeachers(filtered);
+      setFilteredStudents(filtered);
     }
   };
+
   const handleSearchChange = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
-    const searchFiltered = localTeachers.filter(
-      (teacher) =>
-        teacher.name.toLowerCase().includes(query.toLowerCase()) ||
-        teacher.email.toLowerCase().includes(query.toLowerCase()) ||
-        teacher.phone.toLowerCase().includes(query.toLowerCase())
+    const searchFiltered = localStudents.filter(
+      (student) =>
+        student.name.toLowerCase().includes(query.toLowerCase()) ||
+        student.email.toLowerCase().includes(query.toLowerCase()) ||
+        student.phone.toLowerCase().includes(query.toLowerCase())
     );
-    setFilteredTeachers(searchFiltered);
-  };
-
-  const handleKickTeacher = async (teacherId) => {
-    try {
-      // Make an API call to remove the teacher
-      await axios.delete(`${api}/teachers/delete/${teacherId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
-      setLocalTeachers((prevTeachers) =>
-        prevTeachers.filter((teacher) => teacher._id !== teacherId)
-      );
-      setFilteredTeachers((prevTeachers) =>
-        prevTeachers.filter((teacher) => teacher._id !== teacherId)
-      );
-      setTeachers(teachers.filter((teacher) => teacher._id !== teacherId));
-    } catch (err) {
-      console.error("Error kicking teacher:", err);
-      alert("Error kicking teacher.");
-    }
+    setFilteredStudents(searchFiltered);
   };
 
   return (
     <div className="container mx-auto mt-8">
-      <h2 className="text-2xl font-bold mb-4">Teachers</h2>
+      <h2 className="text-2xl font-bold mb-4">Students</h2>
       <div className="flex justify-between mb-4">
         <div className="flex items-center">
           <label
@@ -118,7 +97,7 @@ const TeacherTable = ({ teachers, setTeachers }) => {
             className="mt-1 p-2 border rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-500 w-full max-w-sm"
             value={searchQuery}
             onChange={handleSearchChange}
-            placeholder="Search teachers..."
+            placeholder="Search students..."
           />
         </div>
       </div>
@@ -130,38 +109,35 @@ const TeacherTable = ({ teachers, setTeachers }) => {
               <th className="border border-gray-300 px-4 py-2">Email</th>
               <th className="border border-gray-300 px-4 py-2">Phone</th>
               <th className="border border-gray-300 px-4 py-2">Course</th>
-              <th className="border border-gray-300 px-4 py-2">Actions</th>
+              <th className="border border-gray-300 px-4 py-2">Group</th>
             </tr>
           </thead>
           <tbody>
-            {filteredTeachers.map((teacher) => (
-              <tr key={teacher._id}>
+            {filteredStudents.map((student) => (
+              <tr key={student._id}>
                 <td className="border border-gray-300 px-4 py-2">
-                  {teacher.name}
+                  {student.name}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  {teacher.email}
+                  {student.email}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  {teacher.phone}
+                  {student.phone}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  {teacher.course.name}
+                  {student.course.name}
                 </td>
-                <td className="border border-gray-300 px-4 py-2 flex ">
-                  <button
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-full"
-                    onClick={() => handleKickTeacher(teacher._id)}
-                  >
-                    Kick
-                  </button>
+                <td className="border border-gray-300 px-4 py-2">
+                  {student.groups.map((group, index) => (
+                    <p key={index}>{group.name}</p>
+                  ))}
                 </td>
               </tr>
             ))}
-            {filteredTeachers.length === 0 && (
+            {filteredStudents.length === 0 && (
               <tr>
-                <td colSpan="5" className="py-4 text-center text-gray-500">
-                  No teachers found.
+                <td colSpan="6" className="py-4 text-center text-gray-500">
+                  No students found.
                 </td>
               </tr>
             )}
@@ -172,4 +148,4 @@ const TeacherTable = ({ teachers, setTeachers }) => {
   );
 };
 
-export default TeacherTable;
+export default StudentTable;

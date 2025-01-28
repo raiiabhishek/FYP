@@ -17,7 +17,6 @@ import {
   AiOutlineClose,
 } from "react-icons/ai";
 import { SiGoogleclassroom } from "react-icons/si";
-import { SiCoursera } from "react-icons/si";
 import { IoTimeSharp } from "react-icons/io5";
 import { TfiAnnouncement } from "react-icons/tfi";
 import { AuthContext } from "../../../AuthContext";
@@ -25,7 +24,7 @@ import { AuthContext } from "../../../AuthContext";
 const Sidebar = () => {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { logout } = useContext(AuthContext);
+  const { logout, role } = useContext(AuthContext); // Get role from context
   const location = useLocation();
 
   useEffect(() => {
@@ -79,76 +78,48 @@ const Sidebar = () => {
           <ul className="menu-list">
             <li className="menu-item">
               <NavLink
-                to="/admin"
+                to="/home"
                 className={`flex items-center p-2 rounded hover:bg-gray-200 no-underline ${
-                  isActive("/admin") ? "bg-gray-200" : ""
+                  isActive("/home") ? "bg-gray-200" : ""
                 }`}
               >
                 <AiFillHome className="mr-2" />
                 Home
               </NavLink>
             </li>
-            <li className="menu-item">
-              <NavLink
-                to="/admin/teachers"
-                className={`flex items-center p-2 rounded hover:bg-gray-200 no-underline ${
-                  isActive("/admin/teacher") ? "bg-gray-200" : ""
-                }`}
-              >
-                <AiOutlineTeam className="mr-2" />
-                Teacher
-              </NavLink>
-            </li>
-            <li className="menu-item">
-              <NavLink
-                to="/admin/students"
-                className={`flex items-center p-2 rounded hover:bg-gray-200 no-underline ${
-                  isActive("/admin/student") ? "bg-gray-200" : ""
-                }`}
-              >
-                <AiOutlineUser className="mr-2" />
-                Student
-              </NavLink>
-            </li>
+            {/* Teacher Specific Links */}
+            {role === "teacher" && (
+              <>
+                <li className="menu-item">
+                  <NavLink
+                    to="/students"
+                    className={`flex items-center p-2 rounded hover:bg-gray-200 no-underline ${
+                      isActive("/students") ? "bg-gray-200" : ""
+                    }`}
+                  >
+                    <AiOutlineUser className="mr-2" />
+                    Students
+                  </NavLink>
+                </li>
+                <li className="menu-item">
+                  <NavLink
+                    to="/groups"
+                    className={`flex items-center p-2 rounded hover:bg-gray-200 no-underline ${
+                      isActive("/groups") ? "bg-gray-200" : ""
+                    }`}
+                  >
+                    <SiGoogleclassroom className="mr-2" />
+                    Groups
+                  </NavLink>
+                </li>
+              </>
+            )}
 
             <li className="menu-item">
               <NavLink
-                to="/admin/courses"
+                to="/exams"
                 className={`flex items-center p-2 rounded hover:bg-gray-200 no-underline ${
-                  isActive("/admin/courses") ? "bg-gray-200" : ""
-                }`}
-              >
-                <SiCoursera className="mr-2" />
-                Courses
-              </NavLink>
-            </li>
-            <li className="menu-item">
-              <NavLink
-                to="/admin/modules"
-                className={`flex items-center p-2 rounded hover:bg-gray-200 no-underline ${
-                  isActive("/admin/modules") ? "bg-gray-200" : ""
-                }`}
-              >
-                <AiFillBook className="mr-2" />
-                Modules
-              </NavLink>
-            </li>
-            <li className="menu-item">
-              <NavLink
-                to="/admin/groups"
-                className={`flex items-center p-2 rounded hover:bg-gray-200 no-underline ${
-                  isActive("/admin/groups") ? "bg-gray-200" : ""
-                }`}
-              >
-                <SiGoogleclassroom className="mr-2" />
-                Groups
-              </NavLink>
-            </li>
-            <li className="menu-item">
-              <NavLink
-                to="/admin/exams"
-                className={`flex items-center p-2 rounded hover:bg-gray-200 no-underline ${
-                  isActive("/admin/exams") ? "bg-gray-200" : ""
+                  isActive("/exams") ? "bg-gray-200" : ""
                 }`}
               >
                 <AiFillFileText className="mr-2" />
@@ -166,38 +137,15 @@ const Sidebar = () => {
                 Results
               </NavLink>
             </li>
-
             <li className="menu-item">
               <NavLink
-                to="/admin/events"
+                to="/timetables"
                 className={`flex items-center p-2 rounded hover:bg-gray-200 no-underline ${
-                  isActive("/admin/events") ? "bg-gray-200" : ""
-                }`}
-              >
-                <AiFillCalendar className="mr-2" />
-                Events
-              </NavLink>
-            </li>
-            <li className="menu-item">
-              <NavLink
-                to="/admin/timetables"
-                className={`flex items-center p-2 rounded hover:bg-gray-200 no-underline ${
-                  isActive("/admin/timetables") ? "bg-gray-200" : ""
+                  isActive("/timetables") ? "bg-gray-200" : ""
                 }`}
               >
                 <IoTimeSharp className="mr-2" />
                 Time Tables
-              </NavLink>
-            </li>
-            <li className="menu-item">
-              <NavLink
-                to="/admin/announcements"
-                className={`flex items-center p-2 rounded hover:bg-gray-200 no-underline ${
-                  isActive("/admin/announcements") ? "bg-gray-200" : ""
-                }`}
-              >
-                <TfiAnnouncement className="mr-2" />
-                Announcements
               </NavLink>
             </li>
             <li className="menu-item">
@@ -211,12 +159,50 @@ const Sidebar = () => {
                 Certificates
               </NavLink>
             </li>
+            {/* Student specific links */}
+            {role === "student" && (
+              <>
+                <li className="menu-item">
+                  <NavLink
+                    to="/student/teachers"
+                    className={`flex items-center p-2 rounded hover:bg-gray-200 no-underline ${
+                      isActive("/student/teachers") ? "bg-gray-200" : ""
+                    }`}
+                  >
+                    <AiOutlineTeam className="mr-2" />
+                    Teacher
+                  </NavLink>
+                </li>
+                <li className="menu-item">
+                  <NavLink
+                    to="/results"
+                    className={`flex items-center p-2 rounded hover:bg-gray-200 no-underline ${
+                      isActive("/results") ? "bg-gray-200" : ""
+                    }`}
+                  >
+                    <AiOutlineBarChart className="mr-2" />
+                    Results
+                  </NavLink>
+                </li>
+              </>
+            )}
           </ul>
           <ul className="menu-list mt-auto border-t pt-2">
             <li className="menu-item">
+              <NavLink
+                to="/settings"
+                className={`flex items-center p-2 rounded hover:bg-gray-200 no-underline ${
+                  isActive("/settings") ? "bg-gray-200" : ""
+                }`}
+              >
+                <AiFillSetting className="mr-2" />
+                Settings
+              </NavLink>
+            </li>
+            <li className="menu-item">
               <button
                 onClick={handleLogout}
-                className="flex items-center p-2 rounded hover:bg-gray-200 no-underline w-full"
+                className="flex items-center p-2 rounded hover:bg-gray-200 w-full no-underline"
               >
                 <AiOutlineLogout className="mr-2" />
                 Logout

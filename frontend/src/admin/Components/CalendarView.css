@@ -1,0 +1,144 @@
+/* CalendarView.css */
+
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
+}
+
+.calendar-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.calendar-wrapper {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.rbc-calendar {
+  border: 1px solid #eee;
+  border-radius: 8px;
+}
+
+.rbc-toolbar {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #eee;
+}
+
+.rbc-toolbar-label {
+  font-weight: 500;
+}
+
+.rbc-toolbar button {
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 5px 10px;
+  transition: all 0.2s ease;
+  color: #555;
+}
+
+.rbc-toolbar button:hover,
+.rbc-toolbar button:focus {
+  background-color: #f0f0f0;
+  outline: none;
+}
+
+.rbc-header {
+  background-color: #f0f0f0;
+  padding: 8px 0;
+  font-weight: 500;
+  text-align: center;
+}
+
+.rbc-time-header {
+  background-color: #f0f0f0;
+  padding: 8px 0;
+  font-weight: 500;
+  text-align: center;
+}
+
+.rbc-date-cell {
+  padding: 8px;
+  text-align: center;
+}
+
+.rbc-date-cell:hover {
+  background-color: #f8f9fa;
+}
+
+.rbc-event {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rbc-event-content {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.custom-event {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.loading-message {
+  text-align: center;
+  margin-top: 20px;
+  font-style: italic;
+  color: #777;
+}
+
+.error-message {
+  text-align: center;
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+}
+.responsive-calendar {
+  width: 400px;
+  height: 550px;
+  box-sizing: border-box;
+}
+/* Tablet and Mobile View */
+@media (max-width: 768px) {
+  .responsive-calendar {
+    width: 100%;
+    height: 450px; /* Adjust height for smaller screens*/
+  }
+
+  .calendar-wrapper {
+    padding: 5px; /*  Adjust padding for smaller screens */
+  }
+}
+
+/* Very small screens like smartphones*/
+@media (max-width: 480px) {
+  .responsive-calendar {
+    width: 100%;
+    height: 400px; /* Adjust height for smaller screens */
+  }
+  .calendar-wrapper {
+    padding: 0;
+  }
+}

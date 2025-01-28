@@ -2,86 +2,107 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../../AuthContext";
 
-const GroupTable = ({ groups }) => {
+const AnnouncementTable = ({ announcements }) => {
   const api = import.meta.env.VITE_URL;
   const { authToken } = useContext(AuthContext);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedGroup, setSelectedGroup] = useState(null);
-  const [editGroupName, setEditGroupName] = useState("");
-  const [editCourseName, setEditCourseName] = useState("");
+  const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
+  const [editAnnouncementName, setEditAnnouncementName] = useState("");
+  const [editAnnouncementDescription, setEditAnnouncementDescription] =
+    useState("");
+  const [editAnnouncementCourse, setEditAnnouncementCourse] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [courseOptions, setCourseOptions] = useState([]);
   const [selectedFilterCourse, setSelectedFilterCourse] = useState("");
-  const [localGroups, setLocalGroups] = useState(groups || []);
-  const [filteredGroups, setFilteredGroups] = useState(groups || []);
+  const [localAnnouncements, setLocalAnnouncements] = useState(
+    announcements || []
+  );
+  const [filteredAnnouncements, setFilteredAnnouncements] = useState(
+    announcements || []
+  );
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    setLocalGroups(groups || []);
-    setFilteredGroups(groups || []);
-  }, [groups]);
+    setLocalAnnouncements(announcements || []);
+    setFilteredAnnouncements(announcements || []);
+  }, [announcements]);
 
   useEffect(() => {
     async function fetchCourses() {
-      const response = await axios.get(`${api}/courses/`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      setCourseOptions(response.data.data);
+      try {
+        const response = await axios.get(`${api}/courses/`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        setCourseOptions(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
     }
     fetchCourses();
   }, []);
 
   useEffect(() => {
-    let filtered = localGroups;
+    let filtered = localAnnouncements;
+
     if (selectedFilterCourse) {
       filtered = filtered.filter(
-        (group) => group.course.name === selectedFilterCourse
+        (announcement) => announcement.course?.name === selectedFilterCourse
       );
     }
+
     if (searchTerm) {
-      filtered = filtered.filter((group) => {
-        return group.name.toLowerCase().includes(searchTerm.toLowerCase());
+      filtered = filtered.filter((announcement) => {
+        return (
+          announcement.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          announcement.description
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
+        );
       });
     }
-
-    setFilteredGroups(filtered);
-  }, [localGroups, selectedFilterCourse, searchTerm]);
+    setFilteredAnnouncements(filtered);
+  }, [localAnnouncements, selectedFilterCourse, searchTerm]);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  const handleEditClick = (group) => {
-    setSelectedGroup(group);
-    setEditGroupName(group.name);
-    setEditCourseName(group.course.name);
+  const handleEditClick = (announcement) => {
+    setSelectedAnnouncement(announcement);
+    setEditAnnouncementName(announcement.name);
+    setEditAnnouncementDescription(announcement.description);
+    setEditAnnouncementCourse(announcement.course?.name);
     setIsEditModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsEditModalOpen(false);
-    setMessage("");
-    setSelectedGroup(null);
-    setEditGroupName("");
-    setEditCourseName("");
   };
 
   const handleFilterChange = (e) => {
     setSelectedFilterCourse(e.target.value);
   };
+  const handleCloseModal = () => {
+    setIsEditModalOpen(false);
+    setMessage("");
+    setSelectedAnnouncement(null);
+    setEditAnnouncementName("");
+    setEditAnnouncementDescription("");
+    setEditAnnouncementCourse("");
+  };
 
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage(""); // Clear previous messages
+    setMessage("");
 
     try {
       const response = await axios.patch(
-        `${api}/groups/edit/${selectedGroup._id}`,
-        { name: editGroupName, course: editCourseName },
+        `${api}/announcements/edit/${selectedAnnouncement._id}`,
+        {
+          name: editAnnouncementName,
+          description: editAnnouncementDescription,
+          course: editAnnouncementCourse,
+        },
         {
           headers: {
             "Content-Type": "application/json",
@@ -89,64 +110,75 @@ const GroupTable = ({ groups }) => {
           },
         }
       );
+
       if (response.data.status === "success") {
-        setMessage("Group Updated Successfully!");
-        //Update local state
-        setLocalGroups((prevGroups) =>
-          prevGroups.map((group) =>
-            group._id === selectedGroup._id
+        setMessage("Announcement Updated Successfully!");
+        setLocalAnnouncements((prevAnnouncements) =>
+          prevAnnouncements.map((announcement) =>
+            announcement._id === selectedAnnouncement._id
               ? {
-                  ...group,
-                  name: editGroupName,
-                  course: { name: editCourseName },
+                  ...announcement,
+                  name: editAnnouncementName,
+                  description: editAnnouncementDescription,
+                  course: { name: editAnnouncementCourse },
                 }
-              : group
+              : announcement
           )
         );
-        setFilteredGroups((prevGroups) =>
-          prevGroups.map((group) =>
-            group._id === selectedGroup._id
+        setFilteredAnnouncements((prevAnnouncements) =>
+          prevAnnouncements.map((announcement) =>
+            announcement._id === selectedAnnouncement._id
               ? {
-                  ...group,
-                  name: editGroupName,
-                  course: { name: editCourseName },
+                  ...announcement,
+                  name: editAnnouncementName,
+                  description: editAnnouncementDescription,
+                  course: { name: editAnnouncementCourse },
                 }
-              : group
+              : announcement
           )
         );
         handleCloseModal();
       } else {
-        setMessage(response.data.message || "Failed to update group");
+        setMessage(response.data.message || "Failed to update announcement");
       }
     } catch (error) {
-      setMessage(`Error updating group: ${error.message}`);
+      setMessage(`Error updating announcement: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDelete = async (groupId) => {
+  const handleDelete = async (announcementId) => {
     setLoading(true);
     setMessage("");
+
     try {
-      const response = await axios.delete(`${api}/groups/delete/${groupId}`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
+      const response = await axios.delete(
+        `${api}/announcements/delete/${announcementId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
       if (response.data.status === "success") {
-        setMessage("Group Deleted Successfully");
-        setLocalGroups((prevGroups) =>
-          prevGroups.filter((group) => group._id !== groupId)
+        setMessage("Announcement Deleted Successfully");
+        setLocalAnnouncements((prevAnnouncements) =>
+          prevAnnouncements.filter(
+            (announcement) => announcement._id !== announcementId
+          )
         );
-        setFilteredGroups((prevGroups) =>
-          prevGroups.filter((group) => group._id !== groupId)
+        setFilteredAnnouncements((prevAnnouncements) =>
+          prevAnnouncements.filter(
+            (announcement) => announcement._id !== announcementId
+          )
         );
       } else {
-        setMessage("Failed to delete group");
+        setMessage("Failed to delete announcement");
       }
     } catch (error) {
-      setMessage(`Error deleting group: ${error.message}`);
+      setMessage(`Error deleting announcement: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -154,7 +186,7 @@ const GroupTable = ({ groups }) => {
 
   return (
     <div className="container mx-auto mt-8">
-      <h2 className="text-2xl font-bold mb-4">Groups</h2>
+      <h2 className="text-2xl font-bold mb-4">Announcements</h2>
       <div className="mb-4 flex items-center space-x-2">
         <div className="w-1/2">
           <label
@@ -170,24 +202,25 @@ const GroupTable = ({ groups }) => {
             onChange={handleFilterChange}
           >
             <option value="">All Courses</option>
-            {courseOptions.map((course) => (
-              <option key={course._id} value={course.name}>
-                {course.name}
-              </option>
-            ))}
+            {courseOptions?.length > 0 &&
+              courseOptions.map((course) => (
+                <option key={course._id} value={course.name}>
+                  {course.name}
+                </option>
+              ))}
           </select>
         </div>
         <div className="w-1/2">
           <label
-            htmlFor="searchGroup"
+            htmlFor="searchAnnouncements"
             className="block text-sm font-medium text-gray-700"
           >
-            Search Groups:
+            Search Announcements:
           </label>
           <input
             type="text"
-            id="searchGroup"
-            placeholder="Search groups..."
+            id="searchAnnouncements"
+            placeholder="Search announcements..."
             className="mt-1 border p-2 rounded w-full"
             value={searchTerm}
             onChange={handleSearchChange}
@@ -203,6 +236,9 @@ const GroupTable = ({ groups }) => {
                 Name
               </th>
               <th className="border border-gray-300 py-3 px-4 text-left font-semibold text-gray-700">
+                Description
+              </th>
+              <th className="border border-gray-300 py-3 px-4 text-left font-semibold text-gray-700">
                 Course
               </th>
               <th className="border border-gray-300 py-3 px-4 text-center font-semibold text-gray-700">
@@ -211,23 +247,26 @@ const GroupTable = ({ groups }) => {
             </tr>
           </thead>
           <tbody>
-            {filteredGroups.map((group) => (
-              <tr key={group._id} className="border-b hover:bg-gray-50">
+            {filteredAnnouncements.map((announcement) => (
+              <tr key={announcement._id} className="border-b hover:bg-gray-50">
                 <td className="border border-gray-300 py-2 px-4">
-                  {group.name}
+                  {announcement.name}
                 </td>
                 <td className="border border-gray-300 py-2 px-4">
-                  {group.course.name}
+                  {announcement.description}
+                </td>
+                <td className="border border-gray-300 py-2 px-4">
+                  {announcement.course?.name}
                 </td>
                 <td className="border border-gray-300 py-2 px-4 text-center">
                   <button
-                    onClick={() => handleEditClick(group)}
+                    onClick={() => handleEditClick(announcement)}
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mr-2"
                   >
                     Edit
                   </button>
                   <button
-                    onClick={() => handleDelete(group._id)}
+                    onClick={() => handleDelete(announcement._id)}
                     className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
                   >
                     Delete
@@ -235,10 +274,10 @@ const GroupTable = ({ groups }) => {
                 </td>
               </tr>
             ))}
-            {filteredGroups.length === 0 && (
+            {filteredAnnouncements.length === 0 && (
               <tr>
                 <td colSpan="4" className="py-4 text-center text-gray-500">
-                  No groups found.
+                  No announcements found.
                 </td>
               </tr>
             )}
@@ -251,38 +290,56 @@ const GroupTable = ({ groups }) => {
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
             <h2 className="text-2xl font-semibold mb-6 text-gray-800">
-              Edit Group
+              Edit Announcement
             </h2>
             <form onSubmit={handleEditSubmit} className="space-y-4">
               <div>
                 <label
-                  htmlFor="editGroupName"
+                  htmlFor="editAnnouncementName"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Group Name:
+                  Announcement Name:
                 </label>
                 <input
                   type="text"
-                  id="editGroupName"
-                  value={editGroupName}
-                  onChange={(e) => setEditGroupName(e.target.value)}
+                  id="editAnnouncementName"
+                  value={editAnnouncementName}
+                  onChange={(e) => setEditAnnouncementName(e.target.value)}
                   className="mt-1 p-2 w-full border rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-500"
-                  placeholder="Enter group name"
+                  placeholder="Enter announcement name"
                   required
                 />
               </div>
               <div>
                 <label
-                  htmlFor="editCourseName"
+                  htmlFor="editAnnouncementDescription"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Description:
+                </label>
+                <textarea
+                  id="editAnnouncementDescription"
+                  value={editAnnouncementDescription}
+                  onChange={(e) =>
+                    setEditAnnouncementDescription(e.target.value)
+                  }
+                  className="mt-1 p-2 w-full border rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-500"
+                  placeholder="Enter announcement description"
+                  required
+                ></textarea>
+              </div>
+              <div>
+                <label
+                  htmlFor="editAnnouncementCourse"
                   className="block text-sm font-medium text-gray-700"
                 >
                   Course:
                 </label>
                 <select
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="editCourseName"
-                  value={editCourseName}
-                  onChange={(e) => setEditCourseName(e.target.value)}
+                  id="editAnnouncementCourse"
+                  value={editAnnouncementCourse}
+                  onChange={(e) => setEditAnnouncementCourse(e.target.value)}
                   required
                 >
                   <option value="" disabled>
@@ -299,7 +356,7 @@ const GroupTable = ({ groups }) => {
               {message && (
                 <div
                   className={`mt-2 p-2 rounded-md  ${
-                    message.startsWith("Group Updated Successfully")
+                    message.startsWith("Announcement Updated Successfully")
                       ? "bg-green-100 text-green-700"
                       : "bg-red-100 text-red-700"
                   }`}
@@ -315,7 +372,7 @@ const GroupTable = ({ groups }) => {
                   }`}
                   disabled={loading}
                 >
-                  {loading ? "Updating..." : "Update Group"}
+                  {loading ? "Updating..." : "Update Announcement"}
                 </button>
               </div>
               <button
@@ -333,4 +390,4 @@ const GroupTable = ({ groups }) => {
   );
 };
 
-export default GroupTable;
+export default AnnouncementTable;
