@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../../AuthContext";
+import { AuthContext } from "../../../AuthContext";
 import axios from "axios";
 const CreateGroupForm = ({ toggleCreateState }) => {
   const api = import.meta.env.VITE_URL;

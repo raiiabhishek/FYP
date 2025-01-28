@@ -13,7 +13,7 @@ const createExam = async (req, res) => {
   const ExamModel = mongoose.model("Exams");
   const ModuleModel = mongoose.model("Modules");
   const CourseModel = mongoose.model("Courses");
-  const UserModel = mongoose.model("Users");
+  const UserModel = mongoose.model("User");
 
   const { module, examDate, name } = req.body;
   try {
@@ -43,33 +43,41 @@ const createExam = async (req, res) => {
       name,
     });
 
-    // 5. Prepare the email notification
-    const emailPromises = enrolledUsers.map(async (user) => {
-      const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: user.email,
-        subject: `New Exam Scheduled for ${getModule.name} in ${getCourse.name} Course`,
-        html: `<p>Dear ${user.name},</p>
-                  <p>A new exam <strong>${name}</strong> has been scheduled for the module ${getModule.name} in the course ${getCourse.name}. </p>
-                  <p>The exam is scheduled on : ${examDate}</p>
-                  <p>Please prepare accordingly.</p>`,
-      };
+    //5. Create Single Email for all the users
+    if (!enrolledUsers || enrolledUsers.length === 0) {
+      return res.status(200).send({
+        status: "success",
+        message: "Exam created, but no users to notify for this course.",
+      });
+    }
+    const userEmails = enrolledUsers.map((user) => user.email);
+    const emailBody = `<p>Dear users,</p>
+                    <p>A new exam <strong>${name}</strong> has been scheduled for the module ${getModule.name} in the course ${getCourse.name}. </p>
+                    <p>The exam is scheduled on : ${examDate}</p>
+                    <p>Please prepare accordingly.</p>`;
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: userEmails, // Send to all users
+      subject: `New Exam Scheduled for ${getModule.name} in ${getCourse.name} Course`,
+      html: emailBody,
+    };
 
-      // Send email
-      try {
-        await transporter.sendMail(mailOptions);
-        console.log(`Email sent to ${user.email}`);
-      } catch (error) {
-        console.error(`Email failed to send to ${user.email}`, error);
-      }
-    });
-    // Wait for all emails to be sent
-    await Promise.all(emailPromises);
-
-    res.status(201).send({
-      status: "success",
-      message: "Exam Created and Email Sent Successfully",
-    });
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log(
+        `Email sent to all users enrolled in ${getCourse.name} course`
+      );
+      res.status(201).send({
+        status: "success",
+        message: "Exam Created and email sent successfully!",
+      });
+    } catch (error) {
+      console.error(`Error sending email to all users:`, error);
+      res.status(500).send({
+        status: "failed",
+        message: `Failed to send email to all users: ${error.message}`,
+      });
+    }
   } catch (error) {
     console.error(error);
     res.status(400).send({ status: "failed", message: error.message });

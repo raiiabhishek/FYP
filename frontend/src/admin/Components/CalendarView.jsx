@@ -7,33 +7,32 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 const localizer = momentLocalizer(moment);
 
 const CalendarView = () => {
+  const api = import.meta.env.VITE_URL;
   const [events, setEvents] = useState([]);
-  const [exams, setExams] = useState([]); // New state for exams
+  const [exams, setExams] = useState([]);
 
   useEffect(() => {
     const fetchEventsAndExams = async () => {
       try {
         // Fetch Events
-        const eventsRes = await axios.get("/api/events");
-        const formattedEvents = eventsRes.data.map((event) => ({
+        const eventsRes = await axios.get(`${api}/events`);
+        const formattedEvents = eventsRes?.data?.data?.map((event) => ({
           ...event,
           start: new Date(event.startDate),
           end: new Date(event.endDate),
           title: event.title,
-          allDay: event.allDay,
         }));
         setEvents(formattedEvents);
 
         // Fetch Exams
-        const examsRes = await axios.get("/api/exams");
-        const formattedExams = examsRes.data.map((exam) => ({
+        const examsRes = await axios.get(`${api}/exams`);
+        const formattedExams = examsRes?.data?.data?.map((exam) => ({
           ...exam,
-          start: new Date(exam.examDate), // Assuming exam has a field 'examDate'
+          start: new Date(exam.examDate),
           end: new Date(exam.examDate),
-          title: `${exam.courseName} Exam`, // Example title using exam data
-          allDay: true, // You can change based on your need if exams have a timespan
-          type: "exam", // added to differentiate events and exams
-          color: "red", // added to differentiate the color
+          title: `${exam.name}`,
+          type: "exam",
+          color: "red",
         }));
         setExams(formattedExams);
       } catch (error) {
@@ -44,13 +43,12 @@ const CalendarView = () => {
     fetchEventsAndExams();
   }, []);
 
-  // Combine events and exams for the calendar
   const combinedEvents = [...events, ...exams];
 
   const eventStyleGetter = (event, start, end, isSelected) => {
-    let backgroundColor = "#3174ad"; // Default event color
+    let backgroundColor = "#3174ad";
     if (event.type === "exam") {
-      backgroundColor = event.color; // Use the exam color
+      backgroundColor = event.color;
     }
 
     const style = {
@@ -58,25 +56,32 @@ const CalendarView = () => {
       borderRadius: "0px",
       opacity: 0.8,
       color: "white",
+      fontSize: "10px",
       border: "0px",
       display: "block",
     };
-
     return {
       style: style,
     };
   };
 
+  const CustomEventComponent = ({ event }) => {
+    return <div>{event.title}</div>;
+  };
+
   return (
-    <div style={{ height: "700px" }}>
-      <h2>Calendar</h2>
+    <div className="h-[450px]">
+      <h2 className="text-xl font-bold mb-4">Calendar</h2>
       <Calendar
         localizer={localizer}
         events={combinedEvents}
         startAccessor="start"
         endAccessor="end"
         eventPropGetter={eventStyleGetter}
-        style={{ height: 500 }}
+        style={{ height: 400, width: 400 }}
+        components={{
+          event: CustomEventComponent,
+        }}
       />
     </div>
   );

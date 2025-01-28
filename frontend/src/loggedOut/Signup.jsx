@@ -78,7 +78,7 @@ const SignUp = () => {
     formDataToSend.append("role", formData.role);
     formDataToSend.append("course", formData.course);
     if (formData.role === "student") {
-      formDataToSend.append("classGroup", formData.classGroup);
+      formDataToSend.append("group", formData.classGroup);
     }
 
     formDataToSend.append("image", formData.image);
@@ -210,7 +210,7 @@ const SignUp = () => {
               >
                 <option value="">Select Class Group</option>
                 {classGroups.map((group) => (
-                  <option key={group._id} value={group._id}>
+                  <option key={group.name} value={group.name}>
                     {group.name}
                   </option>
                 ))}

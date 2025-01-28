@@ -5,7 +5,7 @@ const editGroup = async (req, res) => {
   try {
     const { groupId } = req.params;
     const { name, course } = req.body;
-
+    console.log("edit group");
     if (!name || !course) {
       return res.status(400).json({ message: "Name and course are required" });
     }

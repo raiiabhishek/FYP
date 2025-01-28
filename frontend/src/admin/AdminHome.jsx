@@ -1,10 +1,13 @@
-import React from "react";
-import { useState } from "react";
-import Sidebar from "../SideBar";
-import Fab from "./FAB";
-import CreateCourseForm from "./CreateCourseForm";
-import CreateModuleForm from "./CreateModuleForm";
-import CreateGroupForm from "./CreateGroupForm";
+import React, { useState } from "react";
+import Sidebar from "./Components/SideBar";
+import Fab from "./Components/FAB";
+import CreateCourseForm from "./Components/CreateCourseForm";
+import CreateModuleForm from "./Components/CreateModuleForm";
+import CreateGroupForm from "./Components/CreateGroupForm";
+import CreateTimetableForm from "./Components/CreateTimeTableForm";
+import CreateEventForm from "./Components/CreateEventForm";
+import CreateExamForm from "./Components/CreateExamForm";
+import { Outlet } from "react-router-dom";
 
 export default function AdminHome() {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,6 +18,7 @@ export default function AdminHome() {
     exam: false,
     event: false,
     announcement: false,
+    timetable: false,
   });
 
   const config = [
@@ -24,6 +28,7 @@ export default function AdminHome() {
     { id: "exam", label: "Exams" },
     { id: "event", label: "Events" },
     { id: "announcement", label: "Announcements" },
+    { id: "timetable", label: "Time Table" },
   ];
 
   const toggleOptions = () => {
@@ -31,19 +36,27 @@ export default function AdminHome() {
   };
 
   const toggleCreateState = (id) => {
-    setCreateStates((prevState) => ({
-      ...prevState,
-      [id]: !prevState[id],
-    }));
+    setCreateStates((prevState) => {
+      const updatedState = {};
+      for (const key in prevState) {
+        updatedState[key] = key === id ? !prevState[id] : false;
+      }
+      return updatedState;
+    });
     if (isOpen) {
       setIsOpen(false);
     }
   };
+
+  const isAnyCreateFormOpen = Object.values(createStates).some(
+    (state) => state
+  );
+
   return (
     <div>
       <div className="md:flex">
         <Sidebar />
-        <div className="pt-20 px-5 md:pt-0">
+        <div className="pt-40 px-5 md:pt-0 w-full h-full">
           {createStates.course && (
             <CreateCourseForm toggleCreateState={toggleCreateState} />
           )}
@@ -53,6 +66,16 @@ export default function AdminHome() {
           {createStates.group && (
             <CreateGroupForm toggleCreateState={toggleCreateState} />
           )}
+          {createStates.timetable && (
+            <CreateTimetableForm toggleCreateState={toggleCreateState} />
+          )}
+          {createStates.event && (
+            <CreateEventForm toggleCreateState={toggleCreateState} />
+          )}
+          {createStates.exam && (
+            <CreateExamForm toggleCreateState={toggleCreateState} />
+          )}
+          {!isAnyCreateFormOpen && <Outlet />}
         </div>
       </div>
       <Fab

@@ -14,7 +14,9 @@ const transporter = nodemailer.createTransport({
 });
 const signUp = async (req, res) => {
   const UserModel = mongoose.model("User");
-  const { name, email, phone, password, course, role } = req.body;
+  const CourseModel = mongoose.model("Courses");
+  const GroupModel = mongoose.model("Groups");
+  const { name, email, phone, password, course, role, group } = req.body;
   const image = req.file ? path.basename(req.file.path) : null;
 
   const encPass = await bcrypt.hash(password, 10);
@@ -27,15 +29,31 @@ const signUp = async (req, res) => {
     }
     let userData;
     try {
-      userData = await UserModel.create({
-        name,
-        email,
-        phone,
-        password: encPass,
-        image,
-        role,
-        course,
-      });
+      const getCourse = await CourseModel.findOne({ name: course });
+      if (group) {
+        const getGroup = await GroupModel.findOne({ name: group });
+        console.log(getGroup);
+        userData = await UserModel.create({
+          name,
+          email,
+          phone,
+          password: encPass,
+          image,
+          role,
+          course: getCourse._id,
+          groups: [getGroup._id],
+        });
+      } else {
+        userData = await UserModel.create({
+          name,
+          email,
+          phone,
+          password: encPass,
+          image,
+          role,
+          course: getCourse._id,
+        });
+      }
     } catch (e) {
       return res.status(500).json({
         status: "failed",

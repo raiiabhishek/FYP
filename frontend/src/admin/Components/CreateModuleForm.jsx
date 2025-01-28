@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../AuthContext";
+import { AuthContext } from "../../../AuthContext";
 import axios from "axios";
 const CreateModuleForm = ({ toggleCreateState }) => {
   const api = import.meta.env.VITE_URL;
@@ -72,7 +72,7 @@ const CreateModuleForm = ({ toggleCreateState }) => {
               Module Name
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow  border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="name"
               type="text"
               placeholder="Enter Module Name"
@@ -89,7 +89,7 @@ const CreateModuleForm = ({ toggleCreateState }) => {
               Course
             </label>
             <select
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow  border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="course"
               value={course}
               onChange={(e) => setCourse(e.target.value)}
@@ -115,7 +115,7 @@ const CreateModuleForm = ({ toggleCreateState }) => {
               Module Credit
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow  border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="credit"
               type="number"
               placeholder="Enter Module Credit"
@@ -132,7 +132,7 @@ const CreateModuleForm = ({ toggleCreateState }) => {
               Description
             </label>
             <textarea
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow  border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="description"
               placeholder="Enter Module Description"
               value={description}

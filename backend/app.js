@@ -20,6 +20,10 @@ const eventRouter = require("./modules/events/events.routes");
 const timetableRouter = require("./modules/timetable/timetable.routes");
 const groupRouter = require("./modules/groups/groups.routes");
 const examRouter = require("./modules/exams/exams.routes");
+const teacherRouter = require("./modules/teachers/teacher.routes");
+const getUsers = require("./handlers/getUsers");
+const studentRouter = require("./modules/students/students.routes");
+const announcementRouter = require("./modules/announcements/announcements.routes");
 // Models
 require("./models/userModel");
 require("./models/coursesModel");
@@ -28,6 +32,7 @@ require("./models/examsMOdel");
 require("./models/moduleModel");
 require("./models/timetableModel");
 require("./models/groupsModel");
+require("./models/announcementModel");
 // Initialize Express
 const app = express();
 
@@ -48,13 +53,17 @@ app.post("/settings", uploadMiddleware, settings);
 app.post("/forgot-password", forgotPassword.forgotPassword);
 app.post("/reset-password/:token", forgotPassword.resetPassword);
 app.get("/getUser/:id", getUserByID);
+app.get("/users", getUsers);
 
 app.use("/courses", courseRouter);
 app.use("/modules", moduleRouter);
 app.use("/events", eventRouter);
-app.use("/timtetables", timetableRouter);
+app.use("/timetables", timetableRouter);
 app.use("/groups", groupRouter);
 app.use("/exams", examRouter);
+app.use("/announcements", announcementRouter);
+app.use("/teachers", teacherRouter);
+app.use("/students", studentRouter);
 // Start the server
 app.listen(8000, () => {
   console.log("Server started on port 8000");

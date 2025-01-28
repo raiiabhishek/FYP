@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { AuthContext } from "../../AuthContext";
+import { AuthContext } from "../../../AuthContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 const CreateCourseForm = ({ toggleCreateState }) => {
@@ -63,7 +63,7 @@ const CreateCourseForm = ({ toggleCreateState }) => {
               Course Name
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow  border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="name"
               type="text"
               placeholder="Enter Course Name"
@@ -80,7 +80,7 @@ const CreateCourseForm = ({ toggleCreateState }) => {
               Description
             </label>
             <textarea
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow  border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="description"
               placeholder="Enter Course Description"
               value={description}

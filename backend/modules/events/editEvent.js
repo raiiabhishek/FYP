@@ -54,13 +54,10 @@ const editEvent = async (req, res) => {
         message: "Event updated, but no users to notify.",
       });
     }
-    // 4. Send email to each user about event update
-    const emailPromises = allUsers.map(async (user) => {
-      const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: user.email,
-        subject: `Event Updated: ${title}`,
-        html: `<p>Dear ${user.name},</p>
+
+    // 4. Create a single email to all users.
+    const userEmails = allUsers.map((user) => user.email);
+    const emailBody = `<p>Dear users,</p>
               <p>The event <strong>${title}</strong> has been updated.</p>
                <p><strong>Description:</strong> ${description}</p>
               ${
@@ -70,23 +67,29 @@ const editEvent = async (req, res) => {
                      <p><strong>End Date:</strong> ${endDate}, <strong>End Time:</strong> ${endTime}</p>`
               }
                <p><strong>Location:</strong> ${location}</p>
-               <p>Please check the system for the updated event details.</p>`,
-      };
+               <p>Please check the system for the updated event details.</p>`;
 
-      try {
-        await transporter.sendMail(mailOptions);
-        console.log(`Email sent to ${user.email}`);
-      } catch (error) {
-        console.error(`Email failed to send to ${user.email}`, error);
-      }
-    });
-    // Wait for all emails to be sent
-    await Promise.all(emailPromises);
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: userEmails, // Send to all users at once
+      subject: `Event Updated: ${title}`,
+      html: emailBody,
+    };
 
-    res.status(201).send({
-      status: "success",
-      message: "Event updated and emails sent successfully!",
-    });
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log(`Email sent to all users.`);
+      res.status(201).send({
+        status: "success",
+        message: "Event updated and email sent to all users!",
+      });
+    } catch (error) {
+      console.error(`Error sending email to all users:`, error);
+      res.status(500).send({
+        status: "failed",
+        message: `Failed to send email to all users: ${error.message}`,
+      });
+    }
   } catch (err) {
     console.error(err);
     res.status(400).send({ status: "failed", message: err.message });

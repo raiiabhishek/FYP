@@ -51,31 +51,34 @@ const editTimetable = async (req, res) => {
         message: "Timetable updated, but no users to notify for this group.",
       });
     }
-    // 4. Send email notifications
-    const emailPromises = enrolledUsers.map(async (user) => {
-      const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: user.email,
-        subject: `Timetable Updated for ${getGroup.name} Group`,
-        html: `<p>Dear ${user.name},</p>
+    // 4. Send a single email to all users in the group
+    const userEmails = enrolledUsers.map((user) => user.email);
+    const emailBody = `<p>Dear users,</p>
                  <p>The timetable <strong>${name}</strong> for the group ${getGroup.name} has been updated.</p>
                  <p>The updated timetable is valid from ${startDate} to ${endDate}.</p>
-                 <p>Please check the system for the updated timetable entries.</p>`,
-      };
-      try {
-        await transporter.sendMail(mailOptions);
-        console.log(`Email sent to ${user.email}`);
-      } catch (error) {
-        console.error(`Email failed to send to ${user.email}`, error);
-      }
-    });
+                 <p>Please check the system for the updated timetable entries.</p>`;
 
-    // Wait for all emails to be sent
-    await Promise.all(emailPromises);
-    res.status(201).send({
-      status: "success",
-      message: "Timetable updated and Emails sent successfully",
-    });
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: userEmails, // Send to all users at once
+      subject: `Timetable Updated for ${getGroup.name} Group`,
+      html: emailBody,
+    };
+
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log(`Email sent to all users in group: ${getGroup.name}`);
+      res.status(201).send({
+        status: "success",
+        message: "Timetable updated and email sent successfully!",
+      });
+    } catch (error) {
+      console.error(`Error sending email to all users`, error);
+      res.status(500).send({
+        status: "failed",
+        message: `Failed to send email to all users: ${error.message}`,
+      });
+    }
   } catch (err) {
     console.error(err);
     res.status(400).send({ status: "failed", message: err.message });

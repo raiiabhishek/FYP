@@ -23,7 +23,7 @@ const timetableSchema = new Schema({
       },
       startTime: { type: String, required: true }, // e.g., "09:00"
       endTime: { type: String, required: true }, // e.g., "10:00"
-      subject: String, // Or ref to Subjects collection
+      module: { type: mongoose.Schema.Types.ObjectId, ref: "Modules" },
       teacher: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, // Reference to the teacher
       classRoom: { type: String }, // Room Number/Name (optional)
       // add other fields depending on your use case

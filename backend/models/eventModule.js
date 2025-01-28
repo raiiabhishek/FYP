@@ -10,7 +10,6 @@ const eventSchema = new Schema({
   startTime: String, // e.g., "09:00"
   endTime: String, // e.g., "10:00"
   location: String,
-  allDay: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
