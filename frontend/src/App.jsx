@@ -25,6 +25,7 @@ import AAnnouncementList from "./admin/AnnouncementList.jsx";
 import Home from "./loggedIn/Home.jsx";
 import StudentList from "./loggedIn/teacher/StudentsList.jsx";
 import GroupList from "./loggedIn/teacher/GroupsList.jsx";
+import ModuleDetails from "./loggedIn/Pages/ModuleDetails.jsx";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -38,6 +39,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/students" element={<StudentList />} />
         <Route path="/groups" element={<GroupList />} />
+        <Route path="/module/:moduleId" element={<ModuleDetails />} />
         {/* Parent Route for /admin */}
         <Route path="/admin" element={<PrivateRoute element={<AdminHome />} />}>
           {/* Nested Route for /admin/teacher */}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-
+import { MdClose, MdAdd } from "react-icons/md";
 const Popup = ({ children, isOpen, onClose }) => {
   const overlayRef = useRef(null);
 
@@ -11,7 +11,7 @@ const Popup = ({ children, isOpen, onClose }) => {
     };
 
     if (isOpen) {
-      document.body.style.overflow = "hidden"; // prevent scrolling when popup is open
+      document.body.style.overflow = "hidden";
 
       document.addEventListener("mousedown", handleClickOutside);
     }

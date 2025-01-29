@@ -36,7 +36,8 @@ export default function ModuleView() {
   return (
     <div className="min-h-screen">
       <div className="lg:flex">
-        <Sidebar />;<div></div>
+        <Sidebar />
+        <div></div>
       </div>
     </div>
   );

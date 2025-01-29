@@ -24,6 +24,8 @@ const teacherRouter = require("./modules/teachers/teacher.routes");
 const getUsers = require("./handlers/getUsers");
 const studentRouter = require("./modules/students/students.routes");
 const announcementRouter = require("./modules/announcements/announcements.routes");
+const assignmentRouter = require("./modules/assignments/assignments.routes");
+const submissionRouter = require("./modules/submissions/submissions.routes");
 // Models
 require("./models/userModel");
 require("./models/coursesModel");
@@ -33,6 +35,9 @@ require("./models/moduleModel");
 require("./models/timetableModel");
 require("./models/groupsModel");
 require("./models/announcementModel");
+require("./models/assignmentModel");
+require("./models/submissionModel");
+
 // Initialize Express
 const app = express();
 
@@ -40,6 +45,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/images", express.static(path.join(__dirname, "public/images")));
+app.use("/files", express.static(path.join(__dirname, "public/files")));
+
 // Database Connection
 mongoose
   .connect(process.env.mongo_connect, {})
@@ -64,6 +71,8 @@ app.use("/exams", examRouter);
 app.use("/announcements", announcementRouter);
 app.use("/teachers", teacherRouter);
 app.use("/students", studentRouter);
+app.use("/assignments", assignmentRouter);
+app.use("/submissions", submissionRouter);
 
 app.use(auth);
 app.get("/dashboard", user);

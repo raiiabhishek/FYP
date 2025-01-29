@@ -16,6 +16,10 @@ const moduleSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Courses",
   },
+  assignments: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Assignments",
+  },
 });
 
 const moduleModel = mongoose.model("Modules", moduleSchema);

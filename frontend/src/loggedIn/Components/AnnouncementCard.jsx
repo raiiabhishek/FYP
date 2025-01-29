@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TfiAnnouncement } from "react-icons/tfi";
-import Popup from "./Popup"; // Import the Popup component
+import Popup from "./Popup";
 
 export default function AnnouncementCard({ announcement }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);

@@ -1,7 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import Sidebar from "../Components/SideBar";
 import { AuthContext } from "../../../AuthContext";
-
+import ModuleCard from "../Components/ModuleCard";
+import axios from "axios";
+import AnnouncementCard from "../Components/AnnouncementCard";
+import EventCard from "../Components/EventCard";
+import { IoSearch } from "react-icons/io5";
+import CalendarView from "../Components/CalendarView";
 export default function StudentHome() {
   const api = import.meta.env.VITE_URL;
   const { authToken } = useContext(AuthContext);

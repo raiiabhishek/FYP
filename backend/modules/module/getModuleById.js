@@ -3,7 +3,20 @@ const getModuleById = async (req, res) => {
   const ModuleModel = mongoose.model("Modules");
   const { moduleId } = req.params;
   try {
-    const module = await ModuleModel.findById(moduleId).populate("course");
+    const module = await ModuleModel.findById(moduleId)
+      .populate("course")
+      .populate({
+        path: "assignments",
+        populate: {
+          path: "submissions",
+          model: "Submissions",
+          populate: {
+            path: "user",
+            model: "User",
+          },
+        },
+      });
+    console.log(module);
     res.status(200).send({
       status: "success",
       data: module,

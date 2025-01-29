@@ -7,9 +7,15 @@ const getModulesByCourse = async (req, res) => {
     const getCourse = await CourseModel.findOne({ name: course });
     console.log(getCourse);
     if (!getCourse) throw "No such Course";
-    const modules = await ModuleModel.find({ course: getCourse._id }).populate(
-      "course"
-    );
+    const modules = await ModuleModel.find({ course: getCourse._id })
+      .populate("course")
+      .populate({
+        path: "assignments",
+        populate: {
+          path: "submissions",
+          model: "Submissions",
+        },
+      });
     console.log(modules);
     res.status(200).send({
       status: "success",

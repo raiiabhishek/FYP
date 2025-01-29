@@ -1,11 +1,19 @@
 import React from "react";
 import { AiOutlineBarChart } from "react-icons/ai";
 import { FaFilePen } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
 
 export default function ModuleCard({ module }) {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate(`/module/${module._id}`);
+  };
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md w-full cursor-pointer hover:underline ">
+    <div
+      className="bg-white p-4 rounded-lg shadow-md w-full cursor-pointer hover:underline "
+      onClick={handleClick}
+    >
       <h1 className="text-xl font-bold mb-1">{module.name}</h1>
       <h2 className="text-gray-600 mb-3 text-sm">{module.course.name}</h2>
       <div className="flex gap-3 items-center">
