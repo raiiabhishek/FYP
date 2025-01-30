@@ -12,10 +12,13 @@ const getTimetableById = async (req, res) => {
         },
       })
       .populate({
+        path: "entries.module",
+        model: "Modules",
+      })
+      .populate({
         path: "entries.teacher",
         model: "User",
-      })
-      .lean();
+      });
     res.status(201).send({ status: "success", data: timetable });
   } catch (err) {
     res.status(400).send({ status: "failed", message: err.message });

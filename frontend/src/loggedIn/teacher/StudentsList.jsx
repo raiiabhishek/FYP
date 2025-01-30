@@ -42,7 +42,7 @@ export default function StudentList() {
     <div className="min-h-screen">
       <div className="lg:flex">
         <Sidebar />
-        <div className="p-4 lg:p-8">
+        <div className="p-4 lg:p-8 mt-17 lg:mt-0">
           <StudentTable students={students} setStudents={setStudents} />
         </div>
       </div>

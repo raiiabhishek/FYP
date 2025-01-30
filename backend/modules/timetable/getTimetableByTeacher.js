@@ -1,9 +1,12 @@
 const mongoose = require("mongoose");
-const getTimetable = async (req, res) => {
+const getTimetableByTeacher = async (req, res) => {
   const TimetableModel = mongoose.model("Timetable");
+  const UserModel = mongoose.model("User");
   try {
+    const userId = req.user._id;
     const now = new Date();
     const timetables = await TimetableModel.find({
+      "entries.teacher": userId,
       endDate: { $gte: now },
     })
       .populate({
@@ -21,10 +24,9 @@ const getTimetable = async (req, res) => {
         path: "entries.teacher",
         model: "User",
       });
-    res.status(201).send({ status: "success", data: timetables });
-  } catch (err) {
-    res.status(400).send({ status: "failed", message: err.message });
+    res.status(200).send({ status: "success", data: timetables });
+  } catch (e) {
+    res.status(400).send({ status: "failed" });
   }
 };
-
-module.exports = getTimetable;
+module.exports = getTimetableByTeacher;

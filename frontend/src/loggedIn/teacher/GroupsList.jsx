@@ -43,7 +43,7 @@ export default function GroupList() {
     <div className="min-h-screen">
       <div className="lg:flex">
         <Sidebar />
-        <div className="p-4 lg:p-8">
+        <div className="p-4 lg:p-8 mt-17 lg:mt-0">
           <GroupTable groups={groups} setGroups={setGroups} />
         </div>
       </div>

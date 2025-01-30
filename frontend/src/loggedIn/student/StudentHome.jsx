@@ -80,8 +80,8 @@ export default function StudentHome() {
             calendarOpen ? "hidden" : ""
           }`}
         >
-          <div className="flex items-center mb-4 ">
-            <div className="flex flex-grow items-center justify-between">
+          <div className="flex items-center mb-4 mt-17 lg:mt-0">
+            <div className="md:flex flex-grow items-center justify-between">
               <h1 className="text-2xl font-bold">Modules</h1>
               <div className="flex">
                 <input
@@ -120,7 +120,7 @@ export default function StudentHome() {
           </div>
         </div>
         {calendarOpen && (
-          <div className="flex-1 p-4 lg:p-8 flex flex-col">
+          <div className="flex-1 p-4 lg:p-8 flex flex-col ">
             <CalendarView course={profile.course.name} />
           </div>
         )}
