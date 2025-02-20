@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
+const Web3 = require("web3");
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
@@ -26,6 +27,8 @@ const studentRouter = require("./modules/students/students.routes");
 const announcementRouter = require("./modules/announcements/announcements.routes");
 const assignmentRouter = require("./modules/assignments/assignments.routes");
 const submissionRouter = require("./modules/submissions/submissions.routes");
+const resultRouter = require("./modules/results/results.routes");
+const certificateRouter = require("./modules/certificates/certificates.routes");
 // Models
 require("./models/userModel");
 require("./models/coursesModel");
@@ -37,7 +40,7 @@ require("./models/groupsModel");
 require("./models/announcementModel");
 require("./models/assignmentModel");
 require("./models/submissionModel");
-
+require("./models/resultModel");
 // Initialize Express
 const app = express();
 
@@ -73,6 +76,8 @@ app.use("/teachers", teacherRouter);
 app.use("/students", studentRouter);
 app.use("/assignments", assignmentRouter);
 app.use("/submissions", submissionRouter);
+app.use("/results", resultRouter);
+app.use("/certificates", certificateRouter);
 
 app.use(auth);
 app.get("/dashboard", user);

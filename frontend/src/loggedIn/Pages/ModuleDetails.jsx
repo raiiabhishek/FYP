@@ -6,6 +6,7 @@ import axios from "axios";
 import Sidebar from "../Components/SideBar";
 import CreateAssignmentModal from "../Components/CreateAssignmentModal";
 import AssignmentsTab from "./AssignmentsTab";
+import ResultsTab from "./ResultsTab";
 
 const ModuleDetails = () => {
   const { moduleId } = useParams();
@@ -25,6 +26,7 @@ const ModuleDetails = () => {
   const [selectedAssignment, setSelectedAssignment] = useState(null);
 
   const handleTabChange = (newValue) => {
+    console.log("clicked");
     setActiveTab(newValue);
   };
 
@@ -166,7 +168,6 @@ const ModuleDetails = () => {
                       ? "border-blue-500 text-blue-700 font-semibold"
                       : "border-transparent hover:border-gray-300 text-gray-500"
                   }`}
-              disabled
               onClick={() => handleTabChange(1)}
             >
               Results
@@ -185,9 +186,14 @@ const ModuleDetails = () => {
             />
           </div>
         )}
+        {activeTab === 1 && (
+          <div className="p-2">
+            <ResultsTab moduleId={moduleId} />
+          </div>
+        )}
 
         {/* Floating Action Button (FAB) */}
-        {role === "teacher" && (
+        {role === "teacher" && activeTab === 0 && (
           <button
             className="w-14 h-14 rounded-full bg-purple-500 text-white shadow-lg flex items-center justify-center text-3xl transition-transform duration-300 hover:bg-purple-600 focus:outline-none absolute bottom-4 right-4"
             onClick={handleOpenCreateAssignment}

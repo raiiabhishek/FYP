@@ -188,7 +188,7 @@ const ResultsTab = ({ moduleId }) => {
                 <option value="">Select a Student</option>
                 {students &&
                   students.map((student) => (
-                    <option key={student._id} value={student._id}>
+                    <option key={student.id} value={student.id}>
                       {student.name}
                     </option>
                   ))}

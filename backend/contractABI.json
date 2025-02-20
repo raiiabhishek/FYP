@@ -1,0 +1,232 @@
+[
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "courseName",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "certificateId",
+        "type": "string"
+      }
+    ],
+    "name": "CertificateIssued",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_courseName",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_studentName",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_issueDate",
+        "type": "string"
+      },
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "moduleName",
+            "type": "string"
+          },
+          {
+            "internalType": "uint8",
+            "name": "obtainedGrade",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "fullMarks",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "passingGrade",
+            "type": "uint8"
+          }
+        ],
+        "internalType": "struct StudentCertificate.ModuleGrade[]",
+        "name": "_moduleGrades",
+        "type": "tuple[]"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_finalGrade",
+        "type": "uint8"
+      },
+      {
+        "internalType": "string",
+        "name": "_certificateId",
+        "type": "string"
+      }
+    ],
+    "name": "issueCertificate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_newIssuer",
+        "type": "address"
+      }
+    ],
+    "name": "updateIssuer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "name": "certificates",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "studentName",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "courseName",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "issueDate",
+        "type": "string"
+      },
+      {
+        "internalType": "uint8",
+        "name": "finalGrade",
+        "type": "uint8"
+      },
+      {
+        "internalType": "string",
+        "name": "certificateId",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_courseName",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_certificateId",
+        "type": "string"
+      }
+    ],
+    "name": "getCertificate",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "studentName",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "courseName",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "issueDate",
+        "type": "string"
+      },
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "moduleName",
+            "type": "string"
+          },
+          {
+            "internalType": "uint8",
+            "name": "obtainedGrade",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "fullMarks",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "passingGrade",
+            "type": "uint8"
+          }
+        ],
+        "internalType": "struct StudentCertificate.ModuleGrade[]",
+        "name": "moduleGrades",
+        "type": "tuple[]"
+      },
+      {
+        "internalType": "uint8",
+        "name": "finalGrade",
+        "type": "uint8"
+      },
+      {
+        "internalType": "string",
+        "name": "certificateId",
+        "type": "string"
+      },
+      {
+        "internalType": "bool",
+        "name": "found",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "issuer",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

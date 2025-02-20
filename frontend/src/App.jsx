@@ -21,12 +21,14 @@ import AModulesList from "./admin/ModulesList.jsx";
 import AExamsList from "./admin/ExamsList.jsx";
 import AEventsList from "./admin/EventsList.jsx";
 import ATimetableList from "./admin/TimetableList.jsx";
+import ACertificates from "./admin/CertificatesList.jsx";
 import AAnnouncementList from "./admin/AnnouncementList.jsx";
 import Home from "./loggedIn/Home.jsx";
 import StudentList from "./loggedIn/teacher/StudentsList.jsx";
 import GroupList from "./loggedIn/teacher/GroupsList.jsx";
 import ModuleDetails from "./loggedIn/Pages/ModuleDetails.jsx";
 import TimetableList from "./loggedIn/Pages/TimetableList.jsx";
+import ReviewCertificate from "./loggedIn/Components/ReviewCertificate.jsx";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -42,6 +44,7 @@ function App() {
         <Route path="/groups" element={<GroupList />} />
         <Route path="/timetables" element={<TimetableList />} />
         <Route path="/module/:moduleId" element={<ModuleDetails />} />
+        <Route path="/review-certificate" element={<ReviewCertificate />} />
         {/* Parent Route for /admin */}
         <Route path="/admin" element={<PrivateRoute element={<AdminHome />} />}>
           {/* Nested Route for /admin/teacher */}
@@ -55,6 +58,7 @@ function App() {
           <Route path="events" element={<AEventsList />} />
           <Route path="timetables" element={<ATimetableList />} />
           <Route path="announcements" element={<AAnnouncementList />} />
+          <Route path="certificates" element={<ACertificates />} />
         </Route>
       </Route>
     )

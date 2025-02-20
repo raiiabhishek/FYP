@@ -155,17 +155,6 @@ const Sidebar = () => {
                 Exams
               </NavLink>
             </li>
-            <li className="menu-item">
-              <NavLink
-                to="/results"
-                className={`flex items-center p-2 rounded hover:bg-gray-200 no-underline ${
-                  isActive("/results") ? "bg-gray-200" : ""
-                }`}
-              >
-                <AiOutlineBarChart className="mr-2" />
-                Results
-              </NavLink>
-            </li>
 
             <li className="menu-item">
               <NavLink
@@ -202,9 +191,9 @@ const Sidebar = () => {
             </li>
             <li className="menu-item">
               <NavLink
-                to="/certificates"
+                to="/admin/certificates"
                 className={`flex items-center p-2 rounded hover:bg-gray-200 no-underline ${
-                  isActive("/certificates") ? "bg-gray-200" : ""
+                  isActive("/admin/certificates") ? "bg-gray-200" : ""
                 }`}
               >
                 <AiFillStar className="mr-2" />
